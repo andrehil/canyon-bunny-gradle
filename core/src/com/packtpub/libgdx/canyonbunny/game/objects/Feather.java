@@ -6,8 +6,8 @@ import com.packtpub.libgdx.canyonbunny.game.Assets;
 
 public class Feather extends AbstractGameObject {
 
-	private TextureRegion regFeather;
 	public boolean collected;
+	private TextureRegion regFeather;
 
 	public Feather() {
 		init();
@@ -24,8 +24,7 @@ public class Feather extends AbstractGameObject {
 	@Override
 	public void render(SpriteBatch batch) {
 		if (!collected) {
-			TextureRegion reg = null;
-			reg = regFeather;
+			TextureRegion reg = regFeather;
 			batch.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation, //
 					reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
 		}

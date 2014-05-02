@@ -2,8 +2,8 @@ package com.packtpub.libgdx.canyonbunny.util;
 
 /**
  * General constants.
- * 
- * @author André Hildinger
+ *
+ * @author Andrï¿½ Hildinger
  */
 public class Constants {
 

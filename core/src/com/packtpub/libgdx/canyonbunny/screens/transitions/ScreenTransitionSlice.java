@@ -13,10 +13,10 @@ public class ScreenTransitionSlice implements ScreenTransition {
 	public static final int DOWN = 2;
 	public static final int UP_DOWN = 3;
 	private static final ScreenTransitionSlice instance = new ScreenTransitionSlice();
+	private final Array<Integer> sliceIndex = new Array<Integer>();
 	private float duration;
 	private int direction;
 	private Interpolation easing;
-	private final Array<Integer> sliceIndex = new Array<Integer>();
 
 	public static ScreenTransitionSlice init(float duration, int direction, int numSlices, Interpolation easing) {
 		instance.duration = duration;
@@ -41,7 +41,7 @@ public class ScreenTransitionSlice implements ScreenTransition {
 	public void render(SpriteBatch batch, Texture currScreen, Texture nextScreen, float alpha) {
 		float w = currScreen.getWidth();
 		float h = currScreen.getHeight();
-		float x = 0;
+		float x;
 		float y = 0;
 		int sliceWidth = (int) (w / sliceIndex.size);
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -58,19 +58,19 @@ public class ScreenTransitionSlice implements ScreenTransition {
 			// list of slice indices
 			float offsetY = h * (1 + sliceIndex.get(i) / (float) sliceIndex.size);
 			switch (direction) {
-			case UP:
-				y = -offsetY + offsetY * alpha;
-				break;
-			case DOWN:
-				y = offsetY - offsetY * alpha;
-				break;
-			case UP_DOWN:
-				if (i % 2 == 0) {
+				case UP:
 					y = -offsetY + offsetY * alpha;
-				} else {
+					break;
+				case DOWN:
 					y = offsetY - offsetY * alpha;
-				}
-				break;
+					break;
+				case UP_DOWN:
+					if (i % 2 == 0) {
+						y = -offsetY + offsetY * alpha;
+					} else {
+						y = offsetY - offsetY * alpha;
+					}
+					break;
 			}
 			batch.draw(nextScreen, x, y, 0, 0, sliceWidth, h, 1, 1, 0, i * sliceWidth, 0, sliceWidth, nextScreen.getHeight(), false, true);
 		}

@@ -8,28 +8,27 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.packtpub.libgdx.canyonbunny.util.Constants;
 
 public class Assets implements Disposable, AssetErrorListener {
 
-	private static final String TAG = Assets.class.getName();
 	public static final Assets instance = new Assets();
-	private AssetManager assetManager;
-
+	private static final String TAG = Assets.class.getName();
 	public AssetBunny bunny;
 	public AssetRock rock;
 	public AssetGoldCoin goldCoin;
 	public AssetFeather feather;
 	public AssetLevelDecoration levelDecoration;
-
 	public AssetSounds sounds;
 	public AssetMusic music;
-
 	public AssetsFonts fonts;
+	private AssetManager assetManager;
 
 	private Assets() {
 	}
@@ -72,9 +71,9 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-    public void error(AssetDescriptor descriptor, Throwable throwable) {
-        Gdx.app.error(TAG, "Couldn't load asset '" + descriptor.fileName + "'", throwable);
-    }
+	public void error(AssetDescriptor descriptor, Throwable throwable) {
+		Gdx.app.error(TAG, "Couldn't load asset '" + descriptor.fileName + "'", throwable);
+	}
 
 	@Override
 	public void dispose() {
@@ -88,8 +87,28 @@ public class Assets implements Disposable, AssetErrorListener {
 
 		public final AtlasRegion head;
 
+		public final Animation animNormal;
+		public final Animation animCopterTransform;
+		public final Animation animCopterTransformBack;
+		public final Animation animCopterRotate;
+
 		public AssetBunny(TextureAtlas atlas) {
 			head = atlas.findRegion("bunny_head");
+
+			// Animation: Bunny Normal
+			Array<AtlasRegion> regions = atlas.findRegions("anim_bunny_normal");
+			animNormal = new Animation(1.0f / 10.0f, regions, Animation.PlayMode.LOOP_PINGPONG);
+			// Animation: Bunny Copter - knot ears
+			regions = atlas.findRegions("anim_bunny_copter");
+			animCopterTransform = new Animation(1.0f / 10.0f, regions);
+			// Animation: Bunny Copter - unknot ears
+			regions = atlas.findRegions("anim_bunny_copter");
+			animCopterTransformBack = new Animation(1.0f / 10.0f, regions, Animation.PlayMode.REVERSED);
+			// Animation: Bunny Copter - rotate ears
+			regions = new Array<AtlasRegion>();
+			regions.add(atlas.findRegion("anim_bunny_copter", 4));
+			regions.add(atlas.findRegion("anim_bunny_copter", 5));
+			animCopterRotate = new Animation(1.0f / 15.0f, regions);
 		}
 
 	}
@@ -109,9 +128,18 @@ public class Assets implements Disposable, AssetErrorListener {
 	public class AssetGoldCoin {
 
 		public final AtlasRegion goldCoin;
+		public final Animation animGoldCoin;
 
 		public AssetGoldCoin(TextureAtlas atlas) {
 			goldCoin = atlas.findRegion("item_gold_coin");
+
+			// Animation: Gold Coin
+			Array<AtlasRegion> regions = atlas.findRegions("anim_gold_coin");
+			AtlasRegion region = regions.first();
+			for (int i = 0; i < 10; i++) {
+				regions.insert(0, region);
+			}
+			animGoldCoin = new Animation(1.0f / 20.0f, regions, Animation.PlayMode.LOOP_PINGPONG);
 		}
 
 	}

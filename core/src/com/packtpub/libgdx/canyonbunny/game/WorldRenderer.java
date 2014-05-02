@@ -14,18 +14,17 @@ import com.packtpub.libgdx.canyonbunny.util.GamePreferences;
 
 /**
  * Responsible for rendering the world.
- * 
- * @author André Hildinger
+ *
+ * @author Andrï¿½ Hildinger
  */
 public class WorldRenderer implements Disposable {
 
+	private static final boolean DEBUG_DRAW_BOX2D_WORLD = false;
+	private final WorldController worldController;
 	private OrthographicCamera camera;
 	private OrthographicCamera cameraGUI;
 	private SpriteBatch batch;
-	private final WorldController worldController;
 	private ShaderProgram shaderMonochrome;
-
-	private static final boolean DEBUG_DRAW_BOX2D_WORLD = false;
 	private Box2DDebugRenderer b2debugRenderer;
 
 	public WorldRenderer(WorldController worldController) {
@@ -46,7 +45,8 @@ public class WorldRenderer implements Disposable {
 		cameraGUI.update();
 		b2debugRenderer = new Box2DDebugRenderer();
 
-		shaderMonochrome = new ShaderProgram(Gdx.files.internal(Constants.SHADER_MONOCHROME_VERTEX), Gdx.files.internal(Constants.SHADER_MONOCHROME_FRAGMENT));
+		shaderMonochrome = new ShaderProgram(Gdx.files.internal(Constants.SHADER_MONOCHROME_VERTEX),
+				Gdx.files.internal(Constants.SHADER_MONOCHROME_FRAGMENT));
 		if (!shaderMonochrome.isCompiled()) {
 			String msg = "Could not compile shader program: " + shaderMonochrome.getLog();
 			throw new GdxRuntimeException(msg);
@@ -92,7 +92,7 @@ public class WorldRenderer implements Disposable {
 
 	/**
 	 * Draw collected gold coins icon + text (anchored to top left edge)
-	 * 
+	 *
 	 * @param batch
 	 */
 	private void renderGuiScore(SpriteBatch batch) {
@@ -112,7 +112,7 @@ public class WorldRenderer implements Disposable {
 
 	/**
 	 * Draw extra lives icon + text (anchored to top right edge)
-	 * 
+	 *
 	 * @param batch
 	 */
 	private void renderGuiExtraLive(SpriteBatch batch) {
@@ -138,7 +138,7 @@ public class WorldRenderer implements Disposable {
 
 	/**
 	 * Draw FPS text (anchored to bottom right edge)
-	 * 
+	 *
 	 * @param batch
 	 */
 	private void renderGuiFpsCounter(SpriteBatch batch) {
@@ -181,7 +181,7 @@ public class WorldRenderer implements Disposable {
 
 	/**
 	 * Draw game over text
-	 * 
+	 *
 	 * @param batch
 	 */
 	private void renderGuiGameOverMessage(SpriteBatch batch) {
@@ -197,7 +197,7 @@ public class WorldRenderer implements Disposable {
 
 	/**
 	 * Draw collected feather icon (anchored to top left edge)
-	 * 
+	 *
 	 * @param batch
 	 */
 	private void renderGuiFeatherPowerup(SpriteBatch batch) {

@@ -5,20 +5,13 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -30,8 +23,13 @@ import com.packtpub.libgdx.canyonbunny.util.CharacterSkin;
 import com.packtpub.libgdx.canyonbunny.util.Constants;
 import com.packtpub.libgdx.canyonbunny.util.GamePreferences;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
 public class MenuScreen extends AbstractGameScreen {
 
+	// debug
+	private final float DEBUG_REBUILD_INTERVAL = 5.0f;
+	private final boolean debugEnabled = false;
 	private Stage stage;
 	private Skin skinCanyonBunny;
 	private Skin skinLibgdx;
@@ -48,16 +46,12 @@ public class MenuScreen extends AbstractGameScreen {
 	private TextButton btnWinOptSave;
 	private TextButton btnWinOptCancel;
 	private CheckBox chkSound;
-
 	private Slider sldSound;
 	private CheckBox chkMusic;
 	private Slider sldMusic;
 	private SelectBox selCharSkin;
 	private Image imgCharSkin;
 	private CheckBox chkShowFpsCounter;
-	// debug
-	private final float DEBUG_REBUILD_INTERVAL = 5.0f;
-	private final boolean debugEnabled = false;
 	private float debugRebuildStage;
 	private CheckBox chkUseMonochromeShader;
 
@@ -115,11 +109,15 @@ public class MenuScreen extends AbstractGameScreen {
 		// + Coins
 		imgCoins = new Image(skinCanyonBunny, "coins");
 		layer.addActor(imgCoins);
-		imgCoins.setPosition(135, 80);
+		imgCoins.setOrigin(imgCoins.getWidth() / 2, imgCoins.getHeight() / 2);
+		imgCoins.addAction(sequence(moveTo(135, -20), scaleTo(0, 0), fadeOut(0), delay(2.5f), parallel(moveBy(0, 100, 0.5f, Interpolation.swingOut),
+						scaleTo(1.0f, 1.0f, 0.25f, Interpolation.linear), alpha(1.0f, 0.5f))
+		));
 		// + Bunny
 		imgBunny = new Image(skinCanyonBunny, "bunny");
 		layer.addActor(imgBunny);
-		imgBunny.setPosition(355, 40);
+		imgBunny.addAction(sequence(moveTo(655, 510), delay(4.0f), moveBy(-70, -100, 0.5f, Interpolation.fade), moveBy(-100, -50, 0.5f,
+				Interpolation.fade), moveBy(-150, -300, 1.0f, Interpolation.elasticIn)));
 		return layer;
 	}
 
@@ -174,13 +172,11 @@ public class MenuScreen extends AbstractGameScreen {
 
 	private void onOptionsClicked() {
 		loadSettings();
-		btnMenuPlay.setVisible(false);
-		btnMenuOptions.setVisible(false);
-		winOptions.setVisible(true);
+		showMenuButtons(false);
+		showOptionsWindow(true, true);
 	}
 
 	private Table buildOptionsWindowLayer() {
-		Table layer = new Table();
 		winOptions = new Window("Options", skinLibgdx);
 		// + Audio Settings: Sound/Music CheckBox and Volume Slider
 		winOptions.add(buildOptWinAudioSettings()).row();
@@ -193,7 +189,7 @@ public class MenuScreen extends AbstractGameScreen {
 		// Make options window slightly transparent
 		winOptions.setColor(1, 1, 1, 0.8f);
 		// Hide options window by default
-		winOptions.setVisible(false);
+		showOptionsWindow(false, false);
 		if (debugEnabled) {
 			winOptions.debug();
 		}
@@ -206,9 +202,9 @@ public class MenuScreen extends AbstractGameScreen {
 
 	@Override
 	public void resize(int width, int height) {
-        Viewport viewport = new FillViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
-        stage.setViewport(viewport);
-        stage.getViewport().update(width, height, true);
+		Viewport viewport = new FillViewport(Constants.VIEWPORT_GUI_WIDTH, Constants.VIEWPORT_GUI_HEIGHT);
+		stage.setViewport(viewport);
+		stage.getViewport().update(width, height, true);
 	}
 
 	@Override
@@ -265,9 +261,8 @@ public class MenuScreen extends AbstractGameScreen {
 	}
 
 	private void onCancelClicked() {
-		btnMenuPlay.setVisible(true);
-		btnMenuOptions.setVisible(true);
-		winOptions.setVisible(false);
+		showMenuButtons(true);
+		showOptionsWindow(false, true);
 		AudioManager.instance.onSettingsUpdated();
 	}
 
@@ -303,8 +298,8 @@ public class MenuScreen extends AbstractGameScreen {
 		tbl.add(new Label("Character Skin", skinLibgdx, "default-font", Color.ORANGE)).colspan(2);
 		tbl.row();
 		// + Drop down box filled with skin items
-        selCharSkin = new SelectBox(skinLibgdx);
-        selCharSkin.setItems(CharacterSkin.values());
+		selCharSkin = new SelectBox(skinLibgdx);
+		selCharSkin.setItems(CharacterSkin.values());
 		selCharSkin.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -342,8 +337,7 @@ public class MenuScreen extends AbstractGameScreen {
 	private Table buildOptWinButtons() {
 		Table table = new Table();
 		// + Separator
-		Label label = null;
-		label = new Label("", skinLibgdx);
+		Label label = new Label("", skinLibgdx);
 		label.setColor(0.75f, 0.75f, 0.75f, 1);
 		label.setStyle(new LabelStyle(label.getStyle()));
 		label.getStyle().background = skinLibgdx.newDrawable("white");
@@ -374,6 +368,35 @@ public class MenuScreen extends AbstractGameScreen {
 			}
 		});
 		return table;
+	}
+
+	private void showMenuButtons(boolean visible) {
+		float moveDuration = 1.0f;
+		Interpolation moveEasing = Interpolation.swing;
+		float delayOptionsButton = 0.25f;
+		float moveX = 300 * (visible ? -1 : 1);
+		float moveY = 0;
+		final Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+		btnMenuPlay.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
+		btnMenuOptions.addAction(sequence(delay(delayOptionsButton), moveBy(moveX, moveY, moveDuration, moveEasing)));
+		SequenceAction seq = sequence();
+		if (visible) {
+			seq.addAction(delay(delayOptionsButton + moveDuration));
+		}
+		seq.addAction(run(new Runnable() {
+			public void run() {
+				btnMenuPlay.setTouchable(touchEnabled);
+				btnMenuOptions.setTouchable(touchEnabled);
+			}
+		}));
+		stage.addAction(seq);
+	}
+
+	private void showOptionsWindow(boolean visible, boolean animated) {
+		float alphaTo = visible ? 0.8f : 0.0f;
+		float duration = animated ? 1.0f : 0.0f;
+		Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+		winOptions.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
 	}
 
 	@Override

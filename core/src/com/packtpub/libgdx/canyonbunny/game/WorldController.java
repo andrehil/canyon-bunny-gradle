@@ -8,20 +8,11 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Disposable;
-import com.packtpub.libgdx.canyonbunny.game.objects.BunnyHead;
+import com.packtpub.libgdx.canyonbunny.game.objects.*;
 import com.packtpub.libgdx.canyonbunny.game.objects.BunnyHead.JUMP_STATE;
-import com.packtpub.libgdx.canyonbunny.game.objects.Carrot;
-import com.packtpub.libgdx.canyonbunny.game.objects.Feather;
-import com.packtpub.libgdx.canyonbunny.game.objects.GoldCoin;
-import com.packtpub.libgdx.canyonbunny.game.objects.Level;
-import com.packtpub.libgdx.canyonbunny.game.objects.Rock;
 import com.packtpub.libgdx.canyonbunny.screens.DirectedGame;
 import com.packtpub.libgdx.canyonbunny.screens.MenuScreen;
 import com.packtpub.libgdx.canyonbunny.screens.transitions.ScreenTransition;
@@ -32,28 +23,25 @@ import com.packtpub.libgdx.canyonbunny.util.Constants;
 
 /**
  * Contains all the game logic to initialize and modify the game world.
- * 
- * @author André Hildinger
+ *
+ * @author Andrï¿½ Hildinger
  */
 public class WorldController extends InputAdapter implements Disposable {
 
 	private static final String TAG = WorldController.class.getName();
-
-	CameraHelper cameraHelper;
-
 	private final DirectedGame game;
-	public Level level;
-	public int lives;
-	public int score;
-	private float timeLeftGameOverDelay;
-	public float livesVisual;
-	public float scoreVisual;
-	private boolean goalReached;
-	public World b2world;
-
 	// Rectangles for collision detection
 	private final Rectangle r1 = new Rectangle();
 	private final Rectangle r2 = new Rectangle();
+	public Level level;
+	public int lives;
+	public int score;
+	public float livesVisual;
+	public float scoreVisual;
+	public World b2world;
+	CameraHelper cameraHelper;
+	private float timeLeftGameOverDelay;
+	private boolean goalReached;
 
 	/**
 	 * Default constructor.
@@ -106,7 +94,7 @@ public class WorldController extends InputAdapter implements Disposable {
 
 	/**
 	 * Updates the world state.
-	 * 
+	 *
 	 * @param deltaTime
 	 */
 	public void update(float deltaTime) {
@@ -118,7 +106,7 @@ public class WorldController extends InputAdapter implements Disposable {
 				backToMenu();
 			}
 		} else {
-			handleInputGame(deltaTime);
+			handleInputGame();
 		}
 
 		level.update(deltaTime);
@@ -144,7 +132,7 @@ public class WorldController extends InputAdapter implements Disposable {
 		}
 	}
 
-	private void handleInputGame(float deltaTime) {
+	private void handleInputGame() {
 		if (cameraHelper.hasTarget(level.bunnyHead)) {
 			// Player Movement
 			if (Gdx.input.isKeyPressed(Keys.LEFT)) {
@@ -249,16 +237,16 @@ public class WorldController extends InputAdapter implements Disposable {
 			return;
 		}
 		switch (bunnyHead.jumpState) {
-		case GROUNDED:
-			break;
-		case FALLING:
-		case JUMP_FALLING:
-			bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
-			bunnyHead.jumpState = JUMP_STATE.GROUNDED;
-			break;
-		case JUMP_RISING:
-			bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
-			break;
+			case GROUNDED:
+				break;
+			case FALLING:
+			case JUMP_FALLING:
+				bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
+				bunnyHead.jumpState = JUMP_STATE.GROUNDED;
+				break;
+			case JUMP_RISING:
+				bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
+				break;
 		}
 	}
 

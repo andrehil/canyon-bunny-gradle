@@ -13,23 +13,6 @@ public class Clouds extends AbstractGameObject {
 	private Array<TextureRegion> regClouds;
 	private Array<Cloud> clouds;
 
-	private class Cloud extends AbstractGameObject {
-
-		private TextureRegion regCloud;
-
-		public void setRegion(TextureRegion region) {
-			regCloud = region;
-		}
-
-		@Override
-		public void render(SpriteBatch batch) {
-			TextureRegion reg = regCloud;
-			batch.draw(reg.getTexture(), position.x + origin.x, position.y + origin.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation, //
-					reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
-		}
-
-	}
-
 	public Clouds(float length) {
 		this.length = length;
 		init();
@@ -93,6 +76,24 @@ public class Clouds extends AbstractGameObject {
 				clouds.add(spawnCloud());
 			}
 		}
+	}
+
+	private class Cloud extends AbstractGameObject {
+
+		private TextureRegion regCloud;
+
+		public void setRegion(TextureRegion region) {
+			regCloud = region;
+		}
+
+		@Override
+		public void render(SpriteBatch batch) {
+			TextureRegion reg = regCloud;
+			batch.draw(reg.getTexture(), position.x + origin.x, position.y + origin.y, origin.x, origin.y, dimension.x, dimension.y, scale.x,
+					scale.y, rotation, //
+					reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
+		}
+
 	}
 
 }

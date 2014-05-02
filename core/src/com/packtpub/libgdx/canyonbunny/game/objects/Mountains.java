@@ -27,7 +27,6 @@ public class Mountains extends AbstractGameObject {
 	}
 
 	private void drawMountain(SpriteBatch batch, float offsetX, float offsetY, float tintColor, float parallaxSpeedX) {
-		TextureRegion reg = null;
 		batch.setColor(tintColor, tintColor, tintColor, 1);
 		float xRel = dimension.x * offsetX;
 		float yRel = dimension.y * offsetY;
@@ -35,16 +34,19 @@ public class Mountains extends AbstractGameObject {
 		int mountainLength = 0;
 		mountainLength += MathUtils.ceil(length) / 2 * dimension.x * (1 - parallaxSpeedX);
 		mountainLength += MathUtils.ceil(0.5f + offsetX);
+		TextureRegion reg;
 		for (int i = 0; i < mountainLength; i++) {
 			// mountain left
 			reg = regMountainLeft;
-			batch.draw(reg.getTexture(), origin.x + xRel + position.x * parallaxSpeedX, origin.y + yRel + position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation,
-					reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
+			batch.draw(reg.getTexture(), origin.x + xRel + position.x * parallaxSpeedX, origin.y + yRel + position.y, origin.x, origin.y,
+					dimension.x, dimension.y, scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(),
+					reg.getRegionHeight(), false, false);
 			xRel += dimension.x;
 			// mountain right
 			reg = regMountainRight;
-			batch.draw(reg.getTexture(), origin.x + xRel + position.x * parallaxSpeedX, origin.y + yRel + position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation,
-					reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
+			batch.draw(reg.getTexture(), origin.x + xRel + position.x * parallaxSpeedX, origin.y + yRel + position.y, origin.x, origin.y,
+					dimension.x, dimension.y, scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(),
+					reg.getRegionHeight(), false, false);
 			xRel += dimension.x;
 		}
 		// reset color to white

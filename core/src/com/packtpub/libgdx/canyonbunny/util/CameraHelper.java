@@ -7,8 +7,8 @@ import com.packtpub.libgdx.canyonbunny.game.objects.AbstractGameObject;
 
 /**
  * Controls camera position and zoom.
- * 
- * @author André Hildinger
+ *
+ * @author Andrï¿½ Hildinger
  */
 public class CameraHelper {
 
@@ -29,8 +29,8 @@ public class CameraHelper {
 
 	/**
 	 * Updates the camera position.
-	 * 
-	 * @param deltaTime
+	 *
+	 * @param deltaTime delta
 	 */
 	public void update(float deltaTime) {
 		if (!hasTarget()) {
@@ -57,16 +57,8 @@ public class CameraHelper {
 		this.zoom = MathUtils.clamp(zoom, MAX_ZOOM_IN, MAX_ZOOM_OUT);
 	}
 
-	public float getZoom() {
-		return zoom;
-	}
-
 	public void setTarget(AbstractGameObject target) {
 		this.target = target;
-	}
-
-	public AbstractGameObject getTarget() {
-		return target;
 	}
 
 	public boolean hasTarget() {

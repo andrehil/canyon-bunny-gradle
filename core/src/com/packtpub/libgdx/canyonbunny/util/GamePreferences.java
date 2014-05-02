@@ -6,15 +6,14 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class GamePreferences {
 
-	public static final String TAG = GamePreferences.class.getName();
 	public static final GamePreferences instance = new GamePreferences();
+	private final Preferences prefs;
 	public boolean sound;
 	public boolean music;
 	public float volSound;
 	public float volMusic;
 	public int charSkin;
 	public boolean showFpsCounter;
-	private final Preferences prefs;
 	public boolean useMonochromeShader;
 
 	// singleton: prevent instantiation from other classes

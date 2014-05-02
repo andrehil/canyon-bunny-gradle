@@ -42,30 +42,30 @@ public class ScreenTransitionSlide implements ScreenTransition {
 		}
 		// calculate position offset
 		switch (direction) {
-		case LEFT:
-			x = -w * alpha;
-			if (!slideOut) {
-				x += w;
-			}
-			break;
-		case RIGHT:
-			x = w * alpha;
-			if (!slideOut) {
-				x -= w;
-			}
-			break;
-		case UP:
-			y = h * alpha;
-			if (!slideOut) {
-				y -= h;
-			}
-			break;
-		case DOWN:
-			y = -h * alpha;
-			if (!slideOut) {
-				y += h;
-			}
-			break;
+			case LEFT:
+				x = -w * alpha;
+				if (!slideOut) {
+					x += w;
+				}
+				break;
+			case RIGHT:
+				x = w * alpha;
+				if (!slideOut) {
+					x -= w;
+				}
+				break;
+			case UP:
+				y = h * alpha;
+				if (!slideOut) {
+					y -= h;
+				}
+				break;
+			case DOWN:
+				y = -h * alpha;
+				if (!slideOut) {
+					y += h;
+				}
+				break;
 		}
 		// drawing order depends on slide type ('in' or 'out')
 		Texture texBottom = slideOut ? nextScreen : currScreen;

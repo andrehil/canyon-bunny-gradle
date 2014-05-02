@@ -25,31 +25,6 @@ public class Level {
 	public Array<Carrot> carrots;
 	public Goal goal;
 
-	public enum BLOCK_TYPE {
-
-		EMPTY(0, 0, 0), // black
-		ROCK(0, 255, 0), // green
-		PLAYER_SPAWNPOINT(255, 255, 255), // white
-		ITEM_FEATHER(255, 0, 255), // purple
-		ITEM_GOLD_COIN(255, 255, 0), // yellow
-		GOAL(255, 0, 0); // red
-
-		private int color;
-
-		private BLOCK_TYPE(int r, int g, int b) {
-			color = r << 24 | g << 16 | b << 8 | 0xff;
-		}
-
-		public boolean sameColor(int color) {
-			return this.color == color;
-		}
-
-		public int getColor() {
-			return color;
-		}
-
-	}
-
 	public Level(String filename) {
 		init(filename);
 	}
@@ -68,10 +43,10 @@ public class Level {
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
 		// scan pixels from top-left to bottom-right
 		int lastPixel = -1;
+		AbstractGameObject obj;
+		float offsetHeight;
 		for (int pixelY = 0; pixelY < pixmap.getHeight(); pixelY++) {
 			for (int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++) {
-				AbstractGameObject obj = null;
-				float offsetHeight = 0;
 				// height grows from bottom to top
 				float baseHeight = pixmap.getHeight() - pixelY;
 				// get color of current pixel as 32-bit RGBA value
@@ -185,6 +160,27 @@ public class Level {
 			carrot.update(deltaTime);
 		}
 		clouds.update(deltaTime);
+	}
+
+	public enum BLOCK_TYPE {
+
+		EMPTY(0, 0, 0), // black
+		ROCK(0, 255, 0), // green
+		PLAYER_SPAWNPOINT(255, 255, 255), // white
+		ITEM_FEATHER(255, 0, 255), // purple
+		ITEM_GOLD_COIN(255, 255, 0), // yellow
+		GOAL(255, 0, 0); // red
+
+		private int color;
+
+		private BLOCK_TYPE(int r, int g, int b) {
+			color = r << 24 | g << 16 | b << 8 | 0xff;
+		}
+
+		public boolean sameColor(int color) {
+			return this.color == color;
+		}
+
 	}
 
 }

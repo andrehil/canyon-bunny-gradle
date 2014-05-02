@@ -6,8 +6,8 @@ import com.packtpub.libgdx.canyonbunny.game.Assets;
 
 public class WaterOverlay extends AbstractGameObject {
 
-	private TextureRegion regWaterOverlay;
 	private final float length;
+	private TextureRegion regWaterOverlay;
 
 	public WaterOverlay(float length) {
 		this.length = length;
@@ -22,9 +22,9 @@ public class WaterOverlay extends AbstractGameObject {
 
 	@Override
 	public void render(SpriteBatch batch) {
-		TextureRegion reg = null;
-		reg = regWaterOverlay;
-		batch.draw(reg.getTexture(), position.x + origin.x, position.y + origin.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y, rotation, //
+		TextureRegion reg = regWaterOverlay;
+		batch.draw(reg.getTexture(), position.x + origin.x, position.y + origin.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
+				rotation, //
 				reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
 	}
 
