@@ -14,9 +14,9 @@ import com.packtpub.libgdx.canyonbunny.util.GamePreferences;
 
 public class BunnyHead extends AbstractGameObject {
 
-	private final float JUMP_TIME_MAX = 0.3f;
-	private final float JUMP_TIME_OFFSET_FLYING = JUMP_TIME_MAX - 0.018f;
-	private final float JUMP_TIME_MIN = 0.1f;
+	private static final float JUMP_TIME_MAX = 0.3f;
+	private static final float JUMP_TIME_OFFSET_FLYING = JUMP_TIME_MAX - 0.018f;
+	private static final float JUMP_TIME_MIN = 0.1f;
 	public ParticleEffect dustParticles = new ParticleEffect();
 	public VIEW_DIRECTION viewDirection;
 	public float timeJumping;

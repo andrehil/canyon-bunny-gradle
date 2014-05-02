@@ -12,9 +12,9 @@ import com.packtpub.libgdx.canyonbunny.game.objects.AbstractGameObject;
  */
 public class CameraHelper {
 
-	private final float MAX_ZOOM_IN = 0.25f;
-	private final float MAX_ZOOM_OUT = 10.0f;
-	private final float FOLLOW_SPEED = 4.0f;
+	private static final float MAX_ZOOM_IN = 0.25f;
+	private static final float MAX_ZOOM_OUT = 10.0f;
+	private static final float FOLLOW_SPEED = 4.0f;
 	private final Vector2 position;
 	private float zoom;
 	private AbstractGameObject target;

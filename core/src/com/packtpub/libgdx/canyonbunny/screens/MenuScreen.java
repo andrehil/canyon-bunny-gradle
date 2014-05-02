@@ -33,18 +33,10 @@ public class MenuScreen extends AbstractGameScreen {
 	private Stage stage;
 	private Skin skinCanyonBunny;
 	private Skin skinLibgdx;
-	// menu
-	private Image imgBackground;
-	private Image imgLogo;
-	private Image imgInfo;
-	private Image imgCoins;
-	private Image imgBunny;
 	private Button btnMenuPlay;
 	private Button btnMenuOptions;
 	// options
 	private Window winOptions;
-	private TextButton btnWinOptSave;
-	private TextButton btnWinOptCancel;
 	private CheckBox chkSound;
 	private Slider sldSound;
 	private CheckBox chkMusic;
@@ -99,7 +91,7 @@ public class MenuScreen extends AbstractGameScreen {
 	private Table buildBackgroundLayer() {
 		Table layer = new Table();
 		// + Background
-		imgBackground = new Image(skinCanyonBunny, "background");
+		Image imgBackground = new Image(skinCanyonBunny, "background");
 		layer.add(imgBackground);
 		return layer;
 	}
@@ -107,14 +99,14 @@ public class MenuScreen extends AbstractGameScreen {
 	private Table buildObjectsLayer() {
 		Table layer = new Table();
 		// + Coins
-		imgCoins = new Image(skinCanyonBunny, "coins");
+		Image imgCoins = new Image(skinCanyonBunny, "coins");
 		layer.addActor(imgCoins);
 		imgCoins.setOrigin(imgCoins.getWidth() / 2, imgCoins.getHeight() / 2);
 		imgCoins.addAction(sequence(moveTo(135, -20), scaleTo(0, 0), fadeOut(0), delay(2.5f), parallel(moveBy(0, 100, 0.5f, Interpolation.swingOut),
 						scaleTo(1.0f, 1.0f, 0.25f, Interpolation.linear), alpha(1.0f, 0.5f))
 		));
 		// + Bunny
-		imgBunny = new Image(skinCanyonBunny, "bunny");
+		Image imgBunny = new Image(skinCanyonBunny, "bunny");
 		layer.addActor(imgBunny);
 		imgBunny.addAction(sequence(moveTo(655, 510), delay(4.0f), moveBy(-70, -100, 0.5f, Interpolation.fade), moveBy(-100, -50, 0.5f,
 				Interpolation.fade), moveBy(-150, -300, 1.0f, Interpolation.elasticIn)));
@@ -125,11 +117,11 @@ public class MenuScreen extends AbstractGameScreen {
 		Table layer = new Table();
 		layer.left().top();
 		// + Game Logo
-		imgLogo = new Image(skinCanyonBunny, "logo");
+		Image imgLogo = new Image(skinCanyonBunny, "logo");
 		layer.add(imgLogo);
 		layer.row().expandY();
 		// + Info Logos
-		imgInfo = new Image(skinCanyonBunny, "info");
+		Image imgInfo = new Image(skinCanyonBunny, "info");
 		layer.add(imgInfo).bottom();
 		if (debugEnabled) {
 			layer.debug();
@@ -350,7 +342,7 @@ public class MenuScreen extends AbstractGameScreen {
 		table.add(label).colspan(2).height(1).width(220).pad(0, 1, 5, 0);
 		table.row();
 		// + Save Button with event handler
-		btnWinOptSave = new TextButton("Save", skinLibgdx);
+		TextButton btnWinOptSave = new TextButton("Save", skinLibgdx);
 		table.add(btnWinOptSave).padRight(30);
 		btnWinOptSave.addListener(new ChangeListener() {
 			@Override
@@ -359,7 +351,7 @@ public class MenuScreen extends AbstractGameScreen {
 			}
 		});
 		// + Cancel Button with event handler
-		btnWinOptCancel = new TextButton("Cancel", skinLibgdx);
+		TextButton btnWinOptCancel = new TextButton("Cancel", skinLibgdx);
 		table.add(btnWinOptCancel);
 		btnWinOptCancel.addListener(new ChangeListener() {
 			@Override

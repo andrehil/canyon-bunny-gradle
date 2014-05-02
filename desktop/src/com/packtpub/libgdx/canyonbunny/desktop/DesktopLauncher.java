@@ -10,8 +10,8 @@ import java.io.File;
 
 public class DesktopLauncher {
 
-	private static boolean rebuildAtlas = true;
-	private static boolean drawDebugLines = false;
+	private static final boolean rebuildAtlas = true;
+	private static final boolean drawDebugLines = false;
 
 	public static void main(String[] args) {
 		System.setProperty("user.name", "EnglishWords");
